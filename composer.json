@@ -1,0 +1,19 @@
+{
+  "name": "geeh/advent2016",
+  "description": "Advent of Code 2016",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gary Hockin",
+      "email": "gary@hock.in"
+    }
+  ],
+  "autoload":{
+    "psr-4": {
+      "Advent2016\\" : "src"
+    }
+  },
+  "require": {
+  }
+}
