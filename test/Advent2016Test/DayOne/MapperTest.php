@@ -23,4 +23,11 @@ class MapperTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(12, $mapper->mapRoute('R5, L5, R5, R3'));
         self::assertEquals(10, $mapper->mapRoute('R10'));
     }
+
+    public function testMapperSolvesExamplePartTwo()
+    {
+        $mapper = new Mapper();
+
+        self::assertEquals(4, $mapper->mapRoute('R8, R4, R4, R8', true));
+    }
 }
