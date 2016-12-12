@@ -14,22 +14,21 @@ class Mapper
     private $locationX = 0;
     private $locationY = 0;
     private $direction = 1;
+    private $visited = [];
 
     const DIRECTION_N = 1;
     const DIRECTION_E = 2;
     const DIRECTION_S = 3;
     const DIRECTION_W = 4;
 
-    public function mapRoute(string $directionList) : int
+    public function mapRoute(string $directionList, bool $partTwo = false) : int
     {
         $this->locationX = 0;
         $this->locationY = 0;
         $this->direction = self::DIRECTION_N;
 
         $moves = explode(', ', $directionList);
-        foreach ($moves as $move) {
-            $this->handleMove($move);
-        }
+        $this->handleMoves($moves, $partTwo);
 
         if ($this->locationX < 0) {
             $this->locationX *= -1;
@@ -39,16 +38,6 @@ class Mapper
         }
 
         return $this->locationX + $this->locationY;
-    }
-
-    private function handleMove(string $move) : void
-    {
-        preg_match('#([R|L])(\d+)#', $move, $matches);
-        $direction = $matches[1];
-        $steps = $matches[2];
-
-        $this->turn($direction);
-        $this->step($steps);
     }
 
     private function turn(string $direction) : void
@@ -83,6 +72,28 @@ class Mapper
             case self::DIRECTION_W:
                 $this->locationX -= $steps;
                 break;
+        }
+    }
+
+    public function handleMoves(array $moves, bool $partTwo) : void
+    {
+        foreach ($moves as $move) {
+            preg_match('#([R|L])(\d+)#', $move, $matches);
+            $direction = $matches[1];
+            $steps = $matches[2];
+
+            $this->turn($direction);
+
+            for ($i = 1; $i <= $steps; $i++) {
+                $this->step(1);
+                if ($partTwo) {
+                    $location = $this->locationX . ':' . $this->locationY;
+                    if(in_array($location, $this->visited)) {
+                        return;
+                    }
+                    $this->visited[] = $location;
+                }
+            }
         }
     }
 }
